@@ -19,7 +19,8 @@
         'ckeditor',
         'thatisuday.dropzone',
         'swangular',
-        'angularjs-dropdown-multiselect'
+        'angularjs-dropdown-multiselect',
+        'daterangepicker'
     ]);
 
     // ----------------------------
