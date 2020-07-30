@@ -64,7 +64,7 @@
                     $state.go('main.search');
                 })
                 .catch(function (err) {
-                    console.debug(err);
+                    // console.debug(err);
                 })
             // .finally(function () {
             //      self.count--;
@@ -105,4 +105,3 @@
         }
     }
 })();
-  

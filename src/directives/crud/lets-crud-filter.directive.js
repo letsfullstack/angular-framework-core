@@ -39,7 +39,7 @@
                         field.notnull = false;
                         field.name = field.name;
     
-                        if (field.customOptions.file){
+                        if (field.customOptions != undefined &&  field.customOptions.file){
                             delete field.customOptions.file;
                         }
                         if(field.customOptions.multiselect){

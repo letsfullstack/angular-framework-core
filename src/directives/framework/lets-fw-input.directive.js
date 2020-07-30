@@ -18,8 +18,8 @@
                     
                     var dataVar = $el.attr('fw-data');
                     
-                    if (scope.field.customOptions.events == undefined) {
-                        scope.field.customOptions.events = {};
+                    if (!scope.field.customOptions.events) {
+                        scope.field.customOptions['events'] = {};
                     }
 
                     scope.fieldHtml = function () {
