@@ -54,6 +54,22 @@
 								],
 								'select': true,
 							};
+						} else if (field.type == 'olddate') {
+							if (typeof field.filter == 'object' && field.filter.range === true) {
+								// console.log({field: field, scope: scope});
+								var _ini = angular.copy(field);
+								_ini.name += '_ini';
+								_ini.label += ' (Início)';
+								scope.fieldsFilter.push(_ini);
+
+								var _fim = angular.copy(field);
+								_fim.name += '_fim';
+								// Não mudar para "fim", ordenação está por ordem alfabética do label !
+								_fim.label += ' (Término)';
+								scope.fieldsFilter.push(_fim);
+
+								return;
+							}
 						} else if (field.type == 'date') {
 							field.filter['_edit'] = true;
 							if (typeof field.filter == 'object' && field.filter.range === true) {
@@ -230,8 +246,8 @@
 									if (field.type == 'date') {
 										values.ini = scope.data[field.name].startDate;
 										values.fim = scope.data[field.name].endDate;
-										console.log('showBuscaValue', values);
-										console.log('showBuscascope', scope);
+										// console.log('showBuscaValue', values);
+										// console.log('showBuscascope', scope);
 
 										values.ini = scope.getDateFormated(values.ini);
 										values.fim = scope.getDateFormated(values.fim);
@@ -241,22 +257,41 @@
 											delete filterData[field.name];
 											filterData[field.name] = values;
 
-											console.log({values: values}, filterData);
+											// console.log({values: values}, filterData);
 											// filterData[field.name] = values;
+										}
+									} else if (field.type == 'olddate') {
+										if (scope.data[field.name + '_ini']) {
+											values.ini = scope.data[field.name + '_ini'];
+											if (field.type == 'date') {
+												values.ini = scope.getDateFormated(values.ini);
+											}
+										}
+
+										if (scope.data[field.name + '_fim']) {
+											values.fim = scope.data[field.name + '_fim'];
+											if (field.type == 'date') {
+												values.fim = scope.getDateFormated(values.fim);
+											}
+										}
+
+										if (Object.keys(values).length > 0) {
+											filterData[field.name] = values;
 										}
 									}
 								}
 							} else if (scope.data[field.name]) {
+								filterData[field.name] = scope.data[field.name];
 								if (field.customOptions && field.customOptions.telefone) {
 									filterData[field.name] = scope.data[field.name].replace(/\D/g, '');
+								} else if (field.type == 'olddate') {
+									filterData[field.name] = scope.getDateFormated(filterData[field.name]);
 								} else if (field.type == 'date' && field.filter && field.filter.range != true) {
 									// console.log({field: field});
 									filterData[field.name] = scope.getDateFormated(filterData[field.name]);
 								} else if (field.autocomplete && !field.customOptions.multiselect) {
 									filterData[field.name + '_label'] = scope.data[field.name + '.label'].label;
 								} else if (field.autocomplete && field.customOptions.multiselect) {
-									filterData[field.name] = scope.data[field.name];
-								} else {
 									filterData[field.name] = scope.data[field.name];
 								}
 							}

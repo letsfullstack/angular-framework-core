@@ -156,7 +156,7 @@
 	</div>
 
 	<!-- Date -->
-	<div ng-if="field.type == 'datenew'">
+	<div ng-if="field.type == 'olddate'">
 		<input
 			ng-model-options="{fieldInfo: field, allowInvalid: true}"
 			type="text"
@@ -168,7 +168,6 @@
 			ng-model="$parent.data[field.name]"
 			class="form-control"
 			data-date-format="DD/MM/YYYY"
-			placeholder="DD/MM/YYYY"
 			ng-disabled="field.disabled"
 			autocomplete="off"
 		/>
