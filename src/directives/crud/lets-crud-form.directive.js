@@ -15,7 +15,7 @@
                 //Set options for dropzone
                 for (var y in scope.headers.fields) {
                     var field = scope.headers.fields[y];
-                    if (field.customOptions.file) {
+                    if (field.customOptions && field.customOptions.file) {
                         scope.dzOptions = {
                             url: appSettings.API_URL + 'upload/' + field.customOptions.file.container + '/upload',
                             acceptedFiles: field.customOptions.file.acceptedFiles,

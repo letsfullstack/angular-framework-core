@@ -29,6 +29,7 @@
                             if (field.customOptions.hour) {
                                 return moment(data[field.name]).format('DD/MM/YYYY HH:mm');
                             } else {
+                                // console.log(data[field.name])
                                 return moment(data[field.name]).format('DD/MM/YYYY');
                             }
 

@@ -19,9 +19,9 @@
 						controller = $el.controller('ngModel');
 					}
 
-					if (scope.field.type == 'date') {
+					if (scope.field && scope.field.type == 'date') {
 						$el.mask('99/99/9999');
-					} else if (scope.field.customOptions != undefined && scope.field.customOptions.cpf != undefined && scope.field.customOptions.cpf != null) {
+					} else if (scope.field && scope.field.customOptions != undefined && scope.field.customOptions.cpf != undefined && scope.field.customOptions.cpf != null) {
 						$el.mask('999.999.999-99');
 					} else if (scope.field.customOptions != undefined && scope.field.customOptions.cnpj != undefined) {
 						$el.mask('99.999.999/9999-99');
