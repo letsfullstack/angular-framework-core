@@ -16,6 +16,7 @@
 			priority: 1,
 			link: {
 				post: function postLink(scope, element, attrs, controller) {
+					var localscope = $(element).find('input').controller();
 					try {
 						element.addClass('form-control');
 						var tmp = JSON.parse(attrs.field);
@@ -58,15 +59,22 @@
 					}
 					element.on('show.daterangepicker', function ($event, picker) {
 						// foi necessario para inicia com algum valor quando for filtro. caso nao seja singleDatePicker
-						if (!singleDatePicker) {
+						// console.log(localscope)
+						if (!singleDatePicker && !picker.startDate && !picker.endDate) {
 							picker.setStartDate(startDate);
 							picker.setEndDate(endDate);
+							// console.log(element.scope());
 						}
 					});
 					$compile(element)(scope);
 				},
 			},
-			controller: function ($scope) {},
+			controller: function ($scope) {
+				var localScope;
+				setTimeout(function () {
+					console.log($scope);
+				}, 100);
+			},
 			controllerAs: controllerName,
 		};
 	}

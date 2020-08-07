@@ -99,7 +99,7 @@
 
 					scope.openDate = function (__scope) {
 						// console.log(nome, nome);
-						console.log({__scope: __scope});
+						// console.log({__scope: __scope});
 						$('input#' + __scope.name).click();
 					};
 
