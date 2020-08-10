@@ -131,7 +131,7 @@
 
 	<!-- Date NEW -->
 	<div class="date-picker-if" ng-if="field.type == 'date'">
-		<div class="input-group" id="{{ field.name + '_group' }}">
+		<div class="input-group" id="{{ field.name + '_group' }}"  ng-click="openDate(field)">
 			<input
 				date-range-picker
 				class="form-control date-picker"
@@ -141,14 +141,15 @@
 				autocomplete="off"
 				field="{{ field }}"
 				fw-dynamic
-				ng-disabled="field.disabled"
+				disabled
 				placeholder="DD/MM/YYYY"
 				ng-model-options="{ fieldInfo: field, allowInvalid: true }"
 				type="text"
 				ng-model="$parent.data[field.name]"
+				style="cursor: pointer !important;"
 			/>
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-click="openDate(field)">
+				<button type="button" class="btn btn-default">
 					<i class="glyphicon glyphicon-calendar"></i>
 				</button>
 			</span>
