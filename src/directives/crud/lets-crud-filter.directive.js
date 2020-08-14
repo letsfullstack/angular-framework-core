@@ -280,6 +280,26 @@
 										}
 									}
 								}
+
+
+								if (scope.data[field.name + '_ini']) {
+									values.ini = scope.data[field.name + '_ini'];
+									if (field.type == 'date') {
+										values.ini = scope.getDateFormated(values.ini);
+									}
+								}
+
+								if (scope.data[field.name + '_fim']) {
+									values.fim = scope.data[field.name + '_fim'];
+									if (field.type == 'date') {
+										values.fim = scope.getDateFormated(values.fim);
+									}
+								}
+
+								if (Object.keys(values).length > 0) {
+									filterData[field.name] = values;
+								}
+
 							} else if (scope.data[field.name]) {
 								filterData[field.name] = scope.data[field.name];
 								if (field.customOptions && field.customOptions.telefone) {
