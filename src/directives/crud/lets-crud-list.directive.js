@@ -505,19 +505,20 @@
 												$scopeFilter.data[par.replace('_label', '') + '.label'] = {id: params[par.replace('_label', '')], label: params[par]};
 											} else {
 												// console.log('BREKA ->', params[par], params,  par);
+												var _field = settings.fields.find(function(el){return el.name == par})
 
 												if (typeof params[par] == 'object') {
 													for (var key in params[par]) {
 														if (key == 'ini' || key == 'fim') {
-															$scopeFilter.data[par + '_' + key] = moment(params[par][key], 'DD/MM/YYYY').toDate();
+															$scopeFilter.data[par + '_' + key] = _field && _field.type == 'date' ? moment(params[par][key], 'DD/MM/YYYY').toDate() : params[par][key];
 															if (key == 'ini') {
 																$scopeFilter.data[par] = $scopeFilter.data[par] ? $scopeFilter.data[par] : {};
-																$scopeFilter.data[par]['startDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
+																if(_field && _field.type == 'date') $scopeFilter.data[par]['startDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
 															}
 															if (key == 'fim') {
 																$scopeFilter.data[par] = $scopeFilter.data[par] ? $scopeFilter.data[par] : {};
 
-																$scopeFilter.data[par]['endDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
+																if(_field && _field.type == 'date') $scopeFilter.data[par]['endDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
 															}
 														} else if (params[par][key].id && params[par][key].label) {
 															$scopeFilter.data[par] = params[par];
