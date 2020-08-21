@@ -15,7 +15,7 @@
                         }
                         return transformedInput;
                     }
-                    return undefined;
+                    return '';
                 }            
                 ngModelCtrl.$parsers.push(fromUser);
             }
