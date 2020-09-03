@@ -3,9 +3,9 @@
 
 	angular.module('letsAngular').directive('crudList', crudList);
 
-	crudList.$inject = ['$window', 'jQuery', 'Backbone', 'Backgrid', 'appSettings', 'fwObjectService', '$timeout', '$state'];
+	crudList.$inject = ['$window', 'jQuery', 'Backbone', 'Backgrid', 'appSettings', 'fwObjectService', '$timeout', '$state','swangular'];
 
-	function crudList($window, jQuery, Backbone, Backgrid, appSettings, fwObjectService, $timeout, $state) {
+	function crudList($window, jQuery, Backbone, Backgrid, appSettings, fwObjectService, $timeout, $state, swangular) {
 		return {
 			scope: {
 				crudListSettings: '&',
@@ -38,7 +38,11 @@
 							pageSize: 20,
 						},
 						mode: 'server',
-						parseRecords: function (resp, options) {
+						parseRecords: function (resp, options) {						
+							if(settings && settings.loading)	swangular.close()
+
+							scope.$emit('filtered-data', resp, scope);
+
 							if (scope.$el[0].parseRecords && typeof scope.$el[0].parseRecords == 'function') {
 								return scope.$el[0].parseRecords(resp.data);
 							} else {

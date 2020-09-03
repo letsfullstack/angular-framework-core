@@ -3,9 +3,9 @@
 
 	angular.module('letsAngular').directive('crudFilter', crudFilter);
 
-	crudFilter.$inject = ['$q', 'Restangular', '$timeout', '$rootScope'];
+	crudFilter.$inject = ['$q', 'Restangular', '$timeout', '$rootScope','swangular'];
 
-	function crudFilter($q, Restangular, $timeout, $rootScope) {
+	function crudFilter($q, Restangular, $timeout, $rootScope,swangular) {
 		return {
 			templateUrl: 'lets/views/crud/crud-filter.html',
 			replace: true,
@@ -325,6 +325,7 @@
 						scope.objFilter = {data: filterData};
 					}
 
+					if(scope.$parent.headers && scope.$parent.headers.loading) swangular.showLoading()
 					if (start) {
 						$rootScope.$broadcast('refreshGRID', false, true);
 					}
