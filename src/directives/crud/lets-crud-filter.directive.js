@@ -309,7 +309,7 @@
 								} else if (field.type == 'date' && field.filter && field.filter.range != true) {
 									// console.log({field: field});
 									filterData[field.name] = scope.getDateFormated(filterData[field.name]);
-								} else if (field.autocomplete && !field.customOptions.multiselect) {
+								} else if (field.autocomplete && !field.customOptions.multiselect && scope.data[field.name + '.label']) {
 									filterData[field.name + '_label'] = scope.data[field.name + '.label'].label;
 								} else if (field.autocomplete && field.customOptions.multiselect) {
 									filterData[field.name] = scope.data[field.name];
