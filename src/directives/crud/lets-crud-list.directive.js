@@ -16,10 +16,15 @@
 				$scope.route = null;
 
 				$scope.$on('refreshGRID', function (event, start, filter) {
-					$scope.pageableCRUDModel.fetch({
-						error:function () {
-							swangular.close();
-					}}, start, filter);
+					$scope.pageableCRUDModel.fetch(
+						{
+							error: function () {
+								swangular.close();
+							},
+						},
+						start,
+						filter
+					);
 				});
 			},
 			link: function (scope, $el, attrs) {
