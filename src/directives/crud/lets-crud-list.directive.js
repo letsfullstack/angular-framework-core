@@ -3,7 +3,7 @@
 
 	angular.module('letsAngular').directive('crudList', crudList);
 
-	crudList.$inject = ['$window', 'jQuery', 'Backbone', 'Backgrid', 'appSettings', 'fwObjectService', '$timeout', '$state','swangular'];
+	crudList.$inject = ['$window', 'jQuery', 'Backbone', 'Backgrid', 'appSettings', 'fwObjectService', '$timeout', '$state', 'swangular'];
 
 	function crudList($window, jQuery, Backbone, Backgrid, appSettings, fwObjectService, $timeout, $state, swangular) {
 		return {
@@ -16,7 +16,10 @@
 				$scope.route = null;
 
 				$scope.$on('refreshGRID', function (event, start, filter) {
-					$scope.pageableCRUDModel.fetch(null, start, filter);
+					$scope.pageableCRUDModel.fetch({
+						error:function () {
+							swangular.close();
+					}}, start, filter);
 				});
 			},
 			link: function (scope, $el, attrs) {
@@ -38,8 +41,8 @@
 							pageSize: 20,
 						},
 						mode: 'server',
-						parseRecords: function (resp, options) {						
-							if(settings && settings.loading)	swangular.close()
+						parseRecords: function (resp, options) {
+							if (settings && settings.loading) swangular.close();
 
 							scope.$emit('filtered-data', resp, scope);
 
@@ -497,51 +500,50 @@
 										pageableCRUDModel.state.currentPage = parseInt(params.p);
 									}
 
-									if (params.q) {
-										$scopeFilter.data.q = params.q;
-										// $scopeFilter.objFilter = {data:params};
-									} else {
-										$scopeFilter = $scopeFilter || {};
-										var showBusca = false;
+									$scopeFilter.data.q = params.q;
 
-										Object.keys(params).forEach(function (par) {
-											if (par.split('_label').length > 1) {
-												$scopeFilter.data[par.replace('_label', '') + '.label'] = {id: params[par.replace('_label', '')], label: params[par]};
-											} else {
-												// console.log('BREKA ->', params[par], params,  par);
-												var _field = settings.fields.find(function(el){return el.name == par})
+									$scopeFilter = $scopeFilter || {};
+									var showBusca = false;
 
-												if (typeof params[par] == 'object') {
-													for (var key in params[par]) {
-														if (key == 'ini' || key == 'fim') {
-															$scopeFilter.data[par + '_' + key] = _field && _field.type == 'date' ? moment(params[par][key], 'DD/MM/YYYY').toDate() : params[par][key];
-															if (key == 'ini') {
-																$scopeFilter.data[par] = $scopeFilter.data[par] ? $scopeFilter.data[par] : {};
-																if(_field && _field.type == 'date') $scopeFilter.data[par]['startDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
-															}
-															if (key == 'fim') {
-																$scopeFilter.data[par] = $scopeFilter.data[par] ? $scopeFilter.data[par] : {};
+									Object.keys(params).forEach(function (par) {
+										if (par.split('_label').length > 1) {
+											$scopeFilter.data[par.replace('_label', '') + '.label'] = {id: params[par.replace('_label', '')], label: params[par]};
+										} else {
+											// console.log('BREKA ->', params[par], params,  par);
+											var _field = settings.fields.find(function (el) {
+												return el.name == par;
+											});
 
-																if(_field && _field.type == 'date') $scopeFilter.data[par]['endDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
-															}
-														} else if (params[par][key].id && params[par][key].label) {
-															$scopeFilter.data[par] = params[par];
-														} else {
-															$scopeFilter.data[par] = $scopeFilter.data[par] || {};
-															$scopeFilter.data[par][key] = params[par][key];
+											if (typeof params[par] == 'object') {
+												for (var key in params[par]) {
+													if (key == 'ini' || key == 'fim') {
+														$scopeFilter.data[par + '_' + key] = _field && _field.type == 'date' ? moment(params[par][key], 'DD/MM/YYYY').toDate() : params[par][key];
+														if (key == 'ini') {
+															$scopeFilter.data[par] = $scopeFilter.data[par] ? $scopeFilter.data[par] : {};
+															if (_field && _field.type == 'date') $scopeFilter.data[par]['startDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
 														}
+														if (key == 'fim') {
+															$scopeFilter.data[par] = $scopeFilter.data[par] ? $scopeFilter.data[par] : {};
+
+															if (_field && _field.type == 'date') $scopeFilter.data[par]['endDate'] = moment(params[par][key], 'DD/MM/YYYY').toDate();
+														}
+													} else if (params[par][key].id && params[par][key].label) {
+														$scopeFilter.data[par] = params[par];
+													} else {
+														$scopeFilter.data[par] = $scopeFilter.data[par] || {};
+														$scopeFilter.data[par][key] = params[par][key];
 													}
-													// $scopeFilter.data[par+"_ini"] = moment(params[par].ini, 'DD/MM/YYYY').toDate();
-													// $scopeFilter.data[par+"_fim"] = moment(params[par].fim, 'DD/MM/YYYY').toDate();
-												} else {
-													$scopeFilter.data[par] = params[par];
 												}
+												// $scopeFilter.data[par+"_ini"] = moment(params[par].ini, 'DD/MM/YYYY').toDate();
+												// $scopeFilter.data[par+"_fim"] = moment(params[par].fim, 'DD/MM/YYYY').toDate();
+											} else {
+												$scopeFilter.data[par] = params[par];
 											}
-											if (par != 'p') showBusca = true;
-										});
-										$scopeFilter.data['showBusca'] = showBusca;
-										// $scopeFilter.objFilter = {data:{filter:params}};
-									}
+										}
+										if (par != 'p') showBusca = true;
+									});
+									$scopeFilter.data['showBusca'] = showBusca;
+									// $scopeFilter.objFilter = {data:{filter:params}};
 
 									$scopeFilter.filterData(false); //Estava sendo recursivo isso
 								}
