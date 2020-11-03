@@ -332,6 +332,7 @@
 						scope.data[prop] = null;
 					});
 					scope.filterData(true);
+					$rootScope.$broadcast('filter-rest', scope);
 				};
 
 				scope.getDateFormated = function (dt) {
